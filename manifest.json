@@ -1,0 +1,39 @@
+{
+  "manifest_version": 2,
+  "name": "asdfasdfas",
+  "description": "This extension shows a Google Image search result for the current page",
+  "version": "1.0",
+  "page_action": {
+    "default_icon": { // optional
+      "16": "icon.png", // optional
+      "24": "icon.png", // optional
+      "32": "icon.png" // optional
+    },
+    "default_title": "sdsddsl" /*, // optional; shown in tooltip
+    "default_popup": "popup.html" // optional*/
+  },
+  "background": {
+    "scripts": [
+      "background.js" /*, "translations.js"*/
+    ],
+    "persistent": false
+  },
+  "permissions": [
+    "activeTab",
+    "tabs", // ez nem biztos, hogy kell
+    "declarativeContent"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "http://biblia.hit.hu/*"
+      ],
+      "js": [
+        "contentScript.js"
+      ]
+    }
+  ],
+  "web_accessible_resources": [
+    "forditasok/colossians.json"
+  ]
+}
