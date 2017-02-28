@@ -4,10 +4,6 @@ function toggleActive() {
     isActive = !isActive
 }
 
-function getTranslatedChapter() {
-
-}
-
 function activateExtension() {
     console.log('ACTIVATE')
     toggleActive()
@@ -25,13 +21,13 @@ function getBookString() {
     return (!active) ? null : active.href
 }
 
-function getBook() {
+function getBookData() {
     const bookString = getBookString()
-    if (!bookString) return
+    if (!bookString) return { bookName: null, chapter: null }
     const splittedBookElements = bookString.split('/')
-    const chapter = splittedBookElements[splittedBookElements.length - 1]
-    const bookName = splittedBookElements[splittedBookElements.length - 2]
-    if (!parseInt(chapter)) return
+    const chapter = (splittedBookElements[splittedBookElements.length - 1]).toLowerCase()
+    const bookName = (splittedBookElements[splittedBookElements.length - 2]).toLowerCase()
+    if (!parseInt(chapter)) return { bookName: null, chapter: null }
     return { bookName, chapter }
 }
 
@@ -49,17 +45,24 @@ async function isExtensionActivated() {
     return response.isActive
 }
 
-function getTranslation(xhr) {
+function getResponse(xhr) {
     return new Promise((resolve, reject) => xhr.onload = result => resolve(JSON.parse(result.target.response)))
+}
+
+async function getTranslationOfCurrentChapter(bookName, chapter) {
+    const xhr = new XMLHttpRequest()
+    xhr.open("GET", chrome.extension.getURL(`/translations/${bookName}.json`), true)
+    xhr.send()
+    const response = await getResponse(xhr)
+    return response[`chapter${chapter}`]
 }
 
 (async () => {
     isActive = await isExtensionActivated()
-    console.log("lasuk, hogy aktiv-e: ", isActive)
-    const xhr = new XMLHttpRequest();
-    xhr.open("GET", chrome.extension.getURL('/forditasok/colossians.json'), true);
-    xhr.send();
-    const translation = await getTranslation(xhr)
-    console.log(translation.chapter1.v11)
-    console.log(getBook())
+    if (!isActive) return
+    const {bookName, chapter} = getBookData()
+    if (!bookName || !chapter) return
+    const translation = await getTranslationOfCurrentChapter(bookName, chapter)
+    if (!translation) return
+    console.log(JSON.stringify(translation, null, 2))
 })();

@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
-  "name": "asdfasdfas",
-  "description": "This extension shows a Google Image search result for the current page",
+  "name": "Szent Pál Akadémia fordítás",
+  "description": "Ez a bővítmény lehetővé teszi a Biblia olvasását a Szent Pál Akadémia fordításában.",
   "version": "1.0",
   "page_action": {
     "default_icon": { // optional
@@ -9,12 +9,12 @@
       "24": "icon.png", // optional
       "32": "icon.png" // optional
     },
-    "default_title": "sdsddsl" /*, // optional; shown in tooltip
+    "default_title": "Szent Pál Akadémia fordítás" /*, // optional; shown in tooltip
     "default_popup": "popup.html" // optional*/
   },
   "background": {
     "scripts": [
-      "background.js" /*, "translations.js"*/
+      "background.js"
     ],
     "persistent": false
   },
@@ -34,6 +34,6 @@
     }
   ],
   "web_accessible_resources": [
-    "forditasok/colossians.json"
+    "translations/col.json"
   ]
 }
