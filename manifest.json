@@ -9,7 +9,7 @@
       "24": "icon.png", // optional
       "32": "icon.png" // optional
     },
-    "default_title": "Szent Pál Akadémia fordítás",
+    "default_title": "Szent Pál Akadémia fordítás"
   },
   "background": {
     "scripts": [

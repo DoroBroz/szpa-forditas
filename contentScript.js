@@ -1,17 +1,8 @@
 let isActive = false
+let karoli
 
 function toggleActive() {
     isActive = !isActive
-}
-
-function activateExtension() {
-    console.log('ACTIVATE')
-    toggleActive()
-}
-
-function deactivateExtension() {
-    console.log('DEACTIVATE')
-    toggleActive()
 }
 
 function getBookString() {
@@ -31,20 +22,6 @@ function getBookData() {
     return { bookName, chapter }
 }
 
-chrome.runtime.onMessage.addListener((data, sender) => {
-    if (!sender.tab && data.action === 'ACTIVATE') return activateExtension()
-    if (!sender.tab && data.action === 'DEACTIVATE') return deactivateExtension()
-})
-
-function sendMessageAndGetResponse(message) {
-    return new Promise((resolve, reject) => chrome.runtime.sendMessage(message, response => resolve(response)))
-}
-
-async function isExtensionActivated() {
-    const response = await sendMessageAndGetResponse({ action: 'ISACTIVE' })
-    return response.isActive
-}
-
 function getResponse(xhr) {
     return new Promise((resolve, reject) => xhr.onload = result => resolve(JSON.parse(result.target.response)))
 }
@@ -57,14 +34,25 @@ async function getTranslationOfCurrentChapter(bookName, chapter) {
     return response[`chapter${chapter}`]
 }
 
-(async () => {
-    console.log('HEJ')
-    isActive = await isExtensionActivated()
-    if (!isActive) return
+async function translateToSZPA() {
+    karoli = $('.bible-chapter-content').html()
     const {bookName, chapter} = getBookData()
     if (!bookName || !chapter) return
-    const translation = await getTranslationOfCurrentChapter(bookName, chapter)
-    if (!translation) return
-    console.log($("a[name='v2']").parent().next().text())
-    console.log(JSON.stringify(translation, null, 2))
-})();
+    const translationOfCurrentChapter = await getTranslationOfCurrentChapter(bookName, chapter)
+    if (!translationOfCurrentChapter) return
+    const verses = Object.keys(translationOfCurrentChapter)
+    verses.forEach(vers => $(`a[name='${vers}']`).parent().next().text(translationOfCurrentChapter[vers]))
+    $('.bible-breadcrumb a:first').text('Szent Pál Akadémia')
+}
+
+function translateToKaroli() {
+    $('.bible-chapter-content').replaceWith(`<dl class="bible-chapter-content">${karoli}</dl>`)
+    $('.bible-breadcrumb a:first').text('Károli Gáspár')
+}
+
+chrome.runtime.onMessage.addListener((data, sender) => {
+    if (!sender.tab && data.action === 'WASCLICK') {
+        toggleActive()
+        isActive ? translateToSZPA() : translateToKaroli()
+    }
+})
