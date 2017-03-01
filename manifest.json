@@ -9,8 +9,7 @@
       "24": "icon.png", // optional
       "32": "icon.png" // optional
     },
-    "default_title": "Szent Pál Akadémia fordítás" /*, // optional; shown in tooltip
-    "default_popup": "popup.html" // optional*/
+    "default_title": "Szent Pál Akadémia fordítás",
   },
   "background": {
     "scripts": [
@@ -26,9 +25,10 @@
   "content_scripts": [
     {
       "matches": [
-        "http://biblia.hit.hu/*"
+        "http://biblia.hit.hu/*/COL/1"
       ],
       "js": [
+        "jquery-3.1.1.min.js",
         "contentScript.js"
       ]
     }

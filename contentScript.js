@@ -58,11 +58,13 @@ async function getTranslationOfCurrentChapter(bookName, chapter) {
 }
 
 (async () => {
+    console.log('HEJ')
     isActive = await isExtensionActivated()
     if (!isActive) return
     const {bookName, chapter} = getBookData()
     if (!bookName || !chapter) return
     const translation = await getTranslationOfCurrentChapter(bookName, chapter)
     if (!translation) return
+    console.log($("a[name='v2']").parent().next().text())
     console.log(JSON.stringify(translation, null, 2))
 })();

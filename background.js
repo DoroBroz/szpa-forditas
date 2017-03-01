@@ -20,18 +20,26 @@ function getBook() {
     chrome.tabs.sendMessage(await getActiveTabId(), { action: "GETBOOK" }, response => resolve(response)))
 }
 
-const rule = {
-  conditions: [
-    new chrome.declarativeContent.PageStateMatcher({
-      pageUrl: { hostEquals: 'biblia.hit.hu', schemes: ['http'] }
-    })
-  ],
-  actions: [new chrome.declarativeContent.ShowPageAction()]
+function getPageStateMatcher(suffix) {
+  return new chrome.declarativeContent.PageStateMatcher({
+    pageUrl: { schemes: ['http'], hostPrefix: 'biblia.hit.hu', pathSuffix: suffix }
+  })
+}
+
+function getRules() {
+  return [
+    {
+      conditions: [
+        getPageStateMatcher('/COL/1')
+      ],
+      actions: [new chrome.declarativeContent.ShowPageAction()]
+    }
+  ]
 }
 
 chrome.runtime.onInstalled.addListener(details =>
   chrome.declarativeContent.onPageChanged.removeRules(undefined, () =>
-    chrome.declarativeContent.onPageChanged.addRules([rule])
+    chrome.declarativeContent.onPageChanged.addRules(getRules())
   )
 )
 
