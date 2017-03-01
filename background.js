@@ -12,7 +12,8 @@ function getRules() {
   return [
     {
       conditions: [
-        getPageStateMatcher('/COL/1')
+        getPageStateMatcher('/COL/1'),
+        getPageStateMatcher('/HEB/1')
       ],
       actions: [new chrome.declarativeContent.ShowPageAction()]
     }
