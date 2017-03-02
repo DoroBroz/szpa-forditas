@@ -26,7 +26,10 @@
     {
       "matches": [
         "http://biblia.hit.hu/*/COL/1",
-        "http://biblia.hit.hu/*/HEB/1"
+        "http://biblia.hit.hu/*/HEB/1",
+        "http://biblia.hit.hu/*/1TS/5",
+        "http://biblia.hit.hu/*/2CO/3",
+        "http://biblia.hit.hu/*/1CO/13"
       ],
       "js": [
         "jquery-3.1.1.min.js",
@@ -36,6 +39,9 @@
   ],
   "web_accessible_resources": [
     "translations/col.json",
-    "translations/heb.json"
+    "translations/heb.json",
+    "translations/1ts.json",
+    "translations/1co.json",
+    "translations/2co.json"
   ]
 }

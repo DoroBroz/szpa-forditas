@@ -13,7 +13,10 @@ function getRules() {
     {
       conditions: [
         getPageStateMatcher('/COL/1'),
-        getPageStateMatcher('/HEB/1')
+        getPageStateMatcher('/HEB/1'),
+        getPageStateMatcher('/1TS/5'),
+        getPageStateMatcher('/1CO/13'),
+        getPageStateMatcher('/2CO/3')
       ],
       actions: [new chrome.declarativeContent.ShowPageAction()]
     }
